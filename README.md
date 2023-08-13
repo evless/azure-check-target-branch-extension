@@ -37,6 +37,10 @@ In your pipeline YAML file, you can configure the TargetBranchValidator extensio
 -   **releases** - List of releases which we have in target branches
 -   **fieldName** - Name of filed from task which we need to take for comparing
 
+## How it works?
+
+The extension first captures the target branch's name, followed by the associated release number designated for that branch. Subsequently, it gathers all interconnected tasks linked to the pull request. The extension's core functionality involves scrutinizing a specific field's value within these tasks and comparing it against the previously acquired release number.
+
 ## Motivation
 
 Within our development team, we manage a variety of branches, each dedicated to distinct releases. On occasion, team members inadvertently create pull requests in branches that aren't aligned with the intended release target. To address this challenge, we have implemented an automated solution using Azure Pipelines. Now, when a pull request is initiated, our extension examines the connected tasks within the pull request and conducts a thorough comparison between task attributes and the specified target branch. This process ensures that pull requests are seamlessly validated against the appropriate target branch, promoting a streamlined and error-free development workflow.
