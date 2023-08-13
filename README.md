@@ -2,7 +2,7 @@
 
 <img align="right" width="95" height="95"
      alt="TargetBranchValidator extension"
-     src="./marketplace/logo.png">
+     src="https://raw.githubusercontent.com/evless/azure-target-branch-validator-extension/master/marketplace/logo.png">
 
 The TargetBranchValidator Azure Pipeline Extension is a tool designed to help ensure that pull requests are targeting the correct branches for different release stages in your development workflow.
 

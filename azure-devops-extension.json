@@ -2,12 +2,29 @@
     "manifestVersion": 1,
     "id": "target-branch-validator",
     "publisher": "evless",
-    "version": "0.1.9",
+    "version": "0.1.11",
     "name": "TargetBranchValidator",
-    "description": "Azure DevOps Extension",
+    "description": "The TargetBranchValidator Azure Pipeline Extension is a tool designed to help ensure that pull requests are targeting the correct branches for different release stages in your development workflow.",
     "public": false,
     "categories": ["Azure Boards", "Azure Pipelines"],
     "tags": ["WorkItem", "DevOps", "State", "Fields", "Relation", "Build", "Build task", "Release", "Release task"],
+    "links": {
+        "issues": {
+            "uri": "https://github.com/evless/azure-target-branch-validator-extension/issues"
+        },
+        "repository": {
+            "uri": "https://github.com/evless/azure-target-branch-validator-extension"
+        }
+    },
+    "repository": {
+        "type": "git",
+        "uri": "https://github.com/evless/azure-target-branch-validator-extension"
+    },
+    "content": {
+        "details": {
+            "path": "README.md"
+        }
+    },
     "icons": {
         "default": "marketplace/logo.png"
     },
