@@ -1,0 +1,38 @@
+{
+    "name": "target-branch-validator",
+    "version": "0.1.9",
+    "description": "TargetBranchValidator",
+    "keywords": [
+        "extensions",
+        "Azure DevOps",
+        "Visual Studio Team Services"
+    ],
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": ""
+    },
+    "scripts": {
+        "clean": "rimraf ./dist",
+        "compile": "npm run clean && ./node_modules/.bin/tsc --outDir dist",
+        "build": "npm run compile && cp -r ./static/* ./dist && (cd dist && yarn install --production)",
+        "postbuild": "npm run package-extension -- --rev-version",
+        "package-extension": "tfx extension create --manifests azure-devops-extension.json",
+        "publish-extension": "tfx extension publish --manifests azure-devops-extension.json"
+    },
+    "dependencies": {
+        "azure-devops-node-api": "12.1.0",
+        "azure-pipelines-task-lib": "4.4.0",
+        "ts-loader": "8.4.0"
+    },
+    "devDependencies": {
+        "rimraf": "2.6.2",
+        "tfx-cli": "0.16.0",
+        "typescript": "4.6.3"
+    },
+    "overrides": {
+        "tfx-cli": {
+            "xml2js": "0.5.0"
+        }
+    }
+}

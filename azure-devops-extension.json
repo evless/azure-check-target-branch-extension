@@ -1,0 +1,38 @@
+{
+    "manifestVersion": 1,
+    "id": "target-branch-validator",
+    "publisher": "evless",
+    "version": "0.1.9",
+    "name": "TargetBranchValidator",
+    "description": "Azure DevOps Extension",
+    "public": false,
+    "categories": ["Azure Boards", "Azure Pipelines"],
+    "tags": ["WorkItem", "DevOps", "State", "Fields", "Relation", "Build", "Build task", "Release", "Release task"],
+    "icons": {
+        "default": "marketplace/logo.png"
+    },
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],
+    "files": [
+        {
+            "path": "marketplace",
+            "addressable": true
+        },
+        {
+            "path": "dist"
+        }
+    ],
+    "contributions": [
+        {
+            "id": "target-branch-validator",
+            "targets": ["ms.vss-distributed-task.tasks"],
+            "type": "ms.vss-distributed-task.task",
+            "properties": {
+                "name": "dist"
+            }
+        }
+    ]
+}

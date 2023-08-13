@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "noImplicitAny": true,
+        "target": "es6",
+        "alwaysStrict": true,
+        "module": "commonjs",
+        "skipLibCheck": true
+    },
+    "exclude": ["node_modules"]
+}

@@ -1,0 +1,51 @@
+{
+    "id": "ca7d4631-cf7c-40cf-af0d-65124a697aaf",
+    "name": "TargetBranchValidator",
+    "friendlyName": "Check out target branch",
+    "description": "Check out target branch for PR",
+    "author": "Evgeniy Grachev (https://twitter.com/_evless)",
+    "helpMarkDown": "",
+    "category": "Utility",
+    "visibility": ["Build", "Release"],
+    "version": {
+        "Major": 0,
+        "Minor": 1,
+        "Patch": 9
+    },
+    "demands": [],
+    "minimumAgentVersion": "1.91.0",
+    "instanceNameFormat": "TargetBranchValidator",
+    "groups": [],
+    "inputs": [
+        {
+            "name": "branches",
+            "type": "string",
+            "label": "List of branches",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "String with list of branches"
+        },
+        {
+            "name": "releases",
+            "type": "string",
+            "label": "List of releases",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "String with list of releases"
+        },
+        {
+            "name": "fieldName",
+            "type": "string",
+            "label": "Name of field from task for comparing",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "String with name of field from task"
+        }
+    ],
+    "sourceDefinitions": [],
+    "execution": {
+        "Node10": {
+            "target": "index.js"
+        }
+    }
+}
