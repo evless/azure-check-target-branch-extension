@@ -85,6 +85,11 @@ async function run() {
         console.log('List of branches: ', branches);
         console.log('List of releases: ', releases);
 
+        if (!currentRelease) {
+            setResult(TaskResult.Skipped, 'Not protected branch');
+            return;
+        }
+
         const buildWorkItems = await getBuildWorkItems(webApi);
         const wrongWorkItems = await checkWorkItems(webApi, buildWorkItems, currentRelease, taskFieldName);
 
