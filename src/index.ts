@@ -91,14 +91,17 @@ async function run() {
         }
 
         const buildWorkItems = await getBuildWorkItems(webApi);
+
+        if (buildWorkItems.length === 0) {
+            setResult(TaskResult.Failed, `PR doesn't have linked work items`);
+            return;
+        }
+
         const wrongWorkItems = await checkWorkItems(webApi, buildWorkItems, currentRelease, taskFieldName);
 
         if (wrongWorkItems.length > 0) {
             const workItemIds = wrongWorkItems.map((workItem) => workItem.id).join(',');
-            setResult(
-                TaskResult.Failed,
-                `Next task ids have different release number or does't have it: ${workItemIds}`,
-            );
+            setResult(TaskResult.Failed, `Next work item ids have different value or don't have value: ${workItemIds}`);
         } else {
             setResult(TaskResult.Succeeded, '');
         }
