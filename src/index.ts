@@ -46,18 +46,36 @@ async function checkWorkItems(
         WorkItemExpand.Relations,
     );
 
-    const workItemsWithParents = await workItemTrackingClient.getWorkItems(
-        workItems.map((workItem) => {
+    const validWorkItemIds = workItems
+        .map((workItem) => {
             if (workItem.fields) {
                 return fieldName in workItem.fields ? workItem.id : workItem.fields['System.Parent'];
             }
 
             return undefined;
-        }),
-        [fieldName],
-    );
+        })
+        .filter((workItemId) => workItemId !== undefined);
 
-    return workItemsWithParents.filter((workItem) => workItem.fields?.[fieldName] !== releaseNumber);
+    const inValidWorkItemIds = workItems
+        .filter((workItem) => {
+            if (workItem.fields) {
+                return fieldName in workItem.fields
+                    ? !validWorkItemIds.includes(workItem.id)
+                    : !validWorkItemIds.includes(workItem.fields['System.Parent']);
+            }
+
+            return false;
+        })
+        .map((workItem) => workItem.id);
+
+    const workItemsWithParents = await workItemTrackingClient.getWorkItems(validWorkItemIds, [fieldName]);
+
+    return [
+        ...workItemsWithParents
+            .filter((workItem) => workItem.fields?.[fieldName] !== releaseNumber)
+            .map((workItem) => workItem.id),
+        ...inValidWorkItemIds,
+    ];
 }
 
 async function run() {
@@ -97,10 +115,10 @@ async function run() {
             return;
         }
 
-        const wrongWorkItems = await checkWorkItems(webApi, buildWorkItems, currentRelease, taskFieldName);
+        const wrongWorkItemIds = await checkWorkItems(webApi, buildWorkItems, currentRelease, taskFieldName);
 
-        if (wrongWorkItems.length > 0) {
-            const workItemIds = wrongWorkItems.map((workItem) => workItem.id).join(',');
+        if (wrongWorkItemIds.length > 0) {
+            const workItemIds = wrongWorkItemIds.join(', ');
             setResult(TaskResult.Failed, `Next work item ids have different value or don't have value: ${workItemIds}`);
         } else {
             setResult(TaskResult.Succeeded, '');
