@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "target-branch-validator",
     "publisher": "evless",
-    "version": "0.1.16",
+    "version": "0.1.18",
     "name": "TargetBranchValidator",
     "description": "The TargetBranchValidator Azure Pipeline Extension is a tool designed to help ensure that pull requests are targeting the correct branches for different release stages in your development workflow.",
     "public": false,

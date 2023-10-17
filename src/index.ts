@@ -14,6 +14,10 @@ async function getWebApi() {
     const endpointUrl = getVariable('System.TeamFoundationCollectionUri');
     const token = getEndpointAuthorizationParameter('SYSTEMVSSCONNECTION', 'AccessToken', false);
 
+    if (!endpointUrl || !token) {
+        return Promise.reject("Didn't find 'System.TeamFoundationCollectionUri' or 'AccessToken'");
+    }
+
     const credentialHandler = getHandlerFromToken(token);
     return new WebApi(endpointUrl, credentialHandler);
 }
@@ -40,13 +44,13 @@ async function checkWorkItems(
     const workItemTrackingClient = await webApi.getWorkItemTrackingApi();
 
     const workItems = await workItemTrackingClient.getWorkItems(
-        buildWorkItems.map((workItem) => parseInt(workItem.id)),
+        buildWorkItems.map((workItem) => parseInt(workItem.id ?? '')),
         undefined,
         undefined,
         WorkItemExpand.Relations,
     );
 
-    const validWorkItemIds = workItems
+    const validWorkItemIds = (workItems ?? [])
         .map((workItem) => {
             if (workItem.fields) {
                 return fieldName in workItem.fields ? workItem.id : workItem.fields['System.Parent'];
@@ -56,7 +60,7 @@ async function checkWorkItems(
         })
         .filter((workItemId) => workItemId !== undefined);
 
-    const inValidWorkItemIds = workItems
+    const inValidWorkItemIds = (workItems ?? [])
         .filter((workItem) => {
             if (workItem.fields) {
                 return fieldName in workItem.fields
@@ -71,7 +75,7 @@ async function checkWorkItems(
     const workItemsWithParents = await workItemTrackingClient.getWorkItems(validWorkItemIds, [fieldName]);
 
     return [
-        ...workItemsWithParents
+        ...(workItemsWithParents ?? [])
             .filter((workItem) => workItem.fields?.[fieldName] !== releaseNumber)
             .map((workItem) => workItem.id),
         ...inValidWorkItemIds,
@@ -86,7 +90,7 @@ async function run() {
         const releases = getInput('releases', true)
             ?.split(',')
             .map((release) => release.trim());
-        const taskFieldName = getInput('fieldName', true);
+        const taskFieldName = getInput('fieldName', true) ?? '';
 
         if (!branches || !releases || branches?.length !== releases?.length) {
             setResult(TaskResult.Failed, 'Count of branches and releases should be equal');
