@@ -15,7 +15,7 @@
     "scripts": {
         "clean": "rimraf ./dist",
         "compile": "npm run clean && ./node_modules/.bin/tsc --outDir dist",
-        "build": "npm run compile && cp -r ./static/* ./dist && (cd dist && yarn install --production)",
+        "build": "npm run compile && cp -r ./static/* ./dist && (cd dist && yarn install --production) && node ./scripts/update-task-version.js",
         "postbuild": "npm run package-extension -- --rev-version",
         "package-extension": "tfx extension create --manifests azure-devops-extension.json",
         "publish-extension": "tfx extension publish --manifests azure-devops-extension.json"
