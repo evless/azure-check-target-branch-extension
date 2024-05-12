@@ -76,7 +76,7 @@ async function checkWorkItems(
 
     return [
         ...(workItemsWithParents ?? [])
-            .filter((workItem) => workItem.fields?.[fieldName] !== releaseNumber)
+            .filter((workItem) => workItem.fields?.[fieldName].trim() !== releaseNumber)
             .map((workItem) => workItem.id),
         ...inValidWorkItemIds,
     ];
