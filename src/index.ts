@@ -9,10 +9,11 @@ import { WebApi, getHandlerFromToken } from 'azure-devops-node-api/WebApi';
 import { ResourceRef } from 'azure-devops-node-api/interfaces/common/VSSInterfaces';
 
 import { WorkItemExpand } from 'azure-devops-node-api/interfaces/WorkItemTrackingInterfaces';
+import { filterWorkItemWithDifferentRelease, mapWorkItemIdWithParentId } from './utils';
 
 async function getWebApi() {
     const endpointUrl = getVariable('System.TeamFoundationCollectionUri');
-    const token = getEndpointAuthorizationParameter('SYSTEMVSSCONNECTION', 'AccessToken', false);
+    const token = getEndpointAuthorizationParameter('SystemVssConnection', 'AccessToken', false);
 
     if (!endpointUrl || !token) {
         return Promise.reject("Didn't find 'System.TeamFoundationCollectionUri' or 'AccessToken'");
@@ -60,6 +61,7 @@ async function checkWorkItems(
         })
         .filter((workItemId) => workItemId !== undefined);
 
+    // I don't remember what that code does
     const inValidWorkItemIds = (workItems ?? [])
         .filter((workItem) => {
             if (workItem.fields) {
@@ -70,14 +72,14 @@ async function checkWorkItems(
 
             return false;
         })
-        .map((workItem) => workItem.id);
+        .map((workItem) => String(workItem.id));
 
     const workItemsWithParents = await workItemTrackingClient.getWorkItems(validWorkItemIds, [fieldName]);
 
     return [
         ...(workItemsWithParents ?? [])
-            .filter((workItem) => workItem.fields?.[fieldName].trim() !== releaseNumber)
-            .map((workItem) => workItem.id),
+            .filter(filterWorkItemWithDifferentRelease(releaseNumber, fieldName))
+            .map(mapWorkItemIdWithParentId(workItems)),
         ...inValidWorkItemIds,
     ];
 }
