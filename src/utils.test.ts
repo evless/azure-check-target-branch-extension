@@ -26,7 +26,7 @@ describe('filterWorkItemWithDifferentRelease', () => {
 
 describe('mapWorkItemIdWithParentId', () => {
     it('returns work item id', () => {
-        const workItem = { id: 13, fields: { 'Custom.Release': '24.5.1' } };
+        const workItem = { id: 13, fields: { 'Custom.Release': '24.5.1', 'System.Parent': '000' } };
         expect(mapWorkItemIdWithParentId([workItem])(workItem)).toEqual('13');
     });
 
